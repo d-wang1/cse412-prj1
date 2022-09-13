@@ -85,10 +85,10 @@ def depthFirstSearch(problem):
         # parents.put(node, lastNode)
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            # path = []
+            path = []
             # curr = node
             # while curr != problem.getStartState():
-            return 0
+            return path
         if node not in expanded:
             print(f"Explored {node}")
             expanded.append(node)
@@ -97,7 +97,7 @@ def depthFirstSearch(problem):
                     print(f"Pushed {child[0]}")
                     frontier.push(child[0])
                 # path.push(child[1])
-    return -1
+    return None
     
     """
     Search the deepest nodes in the search tree first.
