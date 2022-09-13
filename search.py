@@ -11,8 +11,13 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+<<<<<<< HEAD
 from os import popen
 from util import *
+=======
+from util import *
+
+>>>>>>> 546d582ee74bdbf6fa60c7dd8ec4930d0cd3e6c5
 """
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
@@ -74,6 +79,7 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
+<<<<<<< HEAD
 #     Algorithm: GRAPH_SEARCH:
 # frontier = {startNode}
 # expanded = {}
@@ -87,15 +93,23 @@ def depthFirstSearch(problem):
 #             frontier.push(child)
 # return failed
     from util import Stack
+=======
+>>>>>>> 546d582ee74bdbf6fa60c7dd8ec4930d0cd3e6c5
     frontier = Stack()
-    path = []
+    parents = {}
     frontier.push(problem.getStartState())
     expanded = []
+    node = None
     while not frontier.isEmpty():
+        lastNode = node
         node = frontier.pop()
+        # parents.put(node, lastNode)
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            return path
+            # path = []
+            # curr = node
+            # while curr != problem.getStartState():
+            return 0
         if node not in expanded:
             print(f"Explored {node}")
             expanded.append(node)
