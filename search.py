@@ -119,7 +119,7 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     
-    util.raiseNotDefined()
+    # util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     # util.raiseNotDefined()
@@ -149,8 +149,9 @@ def breadthFirstSearch(problem):
             print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
-                print(f"Pushed {child[0]}")
-                frontier.push(child)
+                if child not in expanded:
+                    print(f"Pushed {child}")
+                    frontier.push(child)
     return 1
     
     
