@@ -11,7 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
+from util import *
 """
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
@@ -73,6 +73,18 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
+#     Algorithm: GRAPH_SEARCH:
+# frontier = {startNode}
+# expanded = {}
+# while frontier is not empty:
+#     node = frontier.pop()
+#     if isGoal(node):
+#         return path_to_node
+#     if node not in expanded:
+#         expanded.add(node)
+#         for each child of node's children:
+#             frontier.push(child)
+# return failed
     from util import Stack
     frontier = Stack()
     path = []
@@ -111,8 +123,28 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    # util.raiseNotDefined()
+    
+    #     Algorithm: GRAPH_SEARCH:
+    # frontier = {startNode}
+    # expanded = {}
+    # while frontier is not empty:
+    #     node = frontier.pop()
+    #     if isGoal(node):
+    #         return path_to_node
+    #     if node not in expanded:
+    #         expanded.add(node)
+    #         for each child of node's children:
+    #             frontier.push(child)
+    # return failed
+    frontier = {problem.getStartState()}
+    expanded = Queue()
+    expanded.push(frontier)
+    
+    
+    
+    
+    
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
