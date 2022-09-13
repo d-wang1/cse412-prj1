@@ -11,6 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+from util import *
 
 """
 In search.py, you will implement generic search algorithms which are called by
@@ -73,16 +74,21 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
-    from util import Stack
     frontier = Stack()
-    path = []
+    parents = {}
     frontier.push(problem.getStartState())
     expanded = []
+    node = None
     while not frontier.isEmpty():
+        lastNode = node
         node = frontier.pop()
+        # parents.put(node, lastNode)
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            return path
+            # path = []
+            # curr = node
+            # while curr != problem.getStartState():
+            return 0
         if node not in expanded:
             print(f"Explored {node}")
             expanded.append(node)
