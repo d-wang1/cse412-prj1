@@ -137,7 +137,8 @@ def breadthFirstSearch(problem):
         node = frontier.pop()
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            return 0
+            path=[]
+            return path
         if node not in expanded:
             print(f"Explored {node}")
             expanded.append(node)
@@ -155,7 +156,30 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    frontier = ()
+    parents = {}
+    frontier.push(problem.getStartState())
+    expanded = []
+    node = None
+    while not frontier.isEmpty():
+        lastNode = node
+        node = frontier.pop()
+        # parents.put(node, lastNode)
+        print(f"Popped {node}")
+        if problem.isGoalState(node):
+            path = []
+            # curr = node
+            # while curr != problem.getStartState():
+            return path
+        if node not in expanded:
+            print(f"Explored {node}")
+            expanded.append(node)
+            for child in problem.getSuccessors(node):
+                if child[0] not in expanded:
+                    print(f"Pushed {child[0]}")
+                    frontier.push(child[0])
+                # path.push(child[1])
+    return -1
 
 def nullHeuristic(state, problem=None):
     """
