@@ -11,6 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+from os import popen
 from util import *
 """
 In search.py, you will implement generic search algorithms which are called by
@@ -121,8 +122,6 @@ def depthFirstSearch(problem):
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
     # util.raiseNotDefined()
     
     #     Algorithm: GRAPH_SEARCH:
@@ -137,9 +136,23 @@ def breadthFirstSearch(problem):
     #         for each child of node's children:
     #             frontier.push(child)
     # return failed
-    frontier = {problem.getStartState()}
-    expanded = Queue()
-    expanded.push(frontier)
+    frontier = Queue()
+    expanded = []
+    frontier.push(problem.getStartState())
+    #path;
+    while not frontier.isEmpty:
+        node = frontier.pop()
+        print(f"Popped {node}")
+        if problem.isGoalState(node):
+            return 0
+        if node not in expanded:
+            print(f"Explored {node}")
+            expanded.append(node)
+            for child in problem.getSuccessors(node):
+                print(f"Pushed {child[0]}")
+                frontier.push(child)
+    return 1
+    
     
     
     
