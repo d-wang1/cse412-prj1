@@ -153,19 +153,27 @@ def breadthFirstSearch(problem):
             while curr != problem.getStartState():
                 path.append(curr)
                 curr=parents[curr]
-            print(f"path: {path}")
-            
-            for x in path:
-                if(parents[x][0]>x[0]):
-                    action.insert(0, Directions.EAST)
-                if(parents[x][0]<x[0]):
-                    action.insert(0, Directions.WEST)
-                if(parents[x][1]>x[1]):
-                    action.insert(0, Directions.NORTH)
+            path.append(problem.getStartState())
+            path.reverse()
+            for c in range(0,len(path)-1):
+                dx = path[c+1][0] - path[c][0]
+                dy = path[c+1][1] - path[c][1]
+                if dx == 1:
+                    action.append(Directions.EAST)
+                    continue
+                elif dx == -1:
+                    action.append(Directions.WEST)
+                    continue
+                elif dy == 1:
+                    action.append(Directions.NORTH)
+                    continue
+                elif dy == -1:
+                    action.append(Directions.SOUTH)
+                    continue
                 else:
-                    action.insert(0, Directions.SOUTH)
-            print(f"action: {action}")
-
+                    return null
+            print(f"FINAL PATH:{path}")
+            print(f"FINAL ACTIONS:{action}")
             return action
         if node not in expanded:
             expanded.append(node)
