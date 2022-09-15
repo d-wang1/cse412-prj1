@@ -115,37 +115,41 @@ def depthFirstSearch(problem):
     # util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
-    # util.raiseNotDefined()
-    
-    #     Algorithm: GRAPH_SEARCH:
-    # frontier = {startNode}
-    # expanded = {}
-    # while frontier is not empty:
-    #     node = frontier.pop()
-    #     if isGoal(node):
-    #         return path_to_node
-    #     if node not in expanded:
-    #         expanded.add(node)
-    #         for each child of node's children:
-    #             frontier.push(child)
-    # return failed
+  
     frontier = Queue()
     expanded = []
     frontier.push(problem.getStartState())
-    #path;
-    while not frontier.isEmpty:
-        node = frontier.pop()
-        print(f"Popped {node}")
+    parents = {}
+    action = []
+    node = None
+    while not frontier.isEmpty():
+        node = frontier.pop()       
         if problem.isGoalState(node):
             path=[]
-            return path
+            curr = node
+            while curr != problem.getStartState():
+                path.append(curr)
+                curr=parents[curr]
+            print(f"path: {path}")
+            
+            for x in path:
+                if(parents[x][0]>x[0]):
+                    action.insert(0, Directions.EAST)
+                if(parents[x][0]<x[0]):
+                    action.insert(0, Directions.WEST)
+                if(parents[x][1]>x[1]):
+                    action.insert(0, Directions.NORTH)
+                else:
+                    action.insert(0, Directions.SOUTH)
+            print(f"action: {action}")
+
+            return action
         if node not in expanded:
-            print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
-                if child not in expanded:
-                    print(f"Pushed {child}")
-                    frontier.push(child)
+                if child[0] not in expanded:
+                    parents[child[0]] = node
+                    frontier.push(child[0])
     return None
     
     
