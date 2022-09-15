@@ -13,6 +13,7 @@
 
 from os import popen
 from util import *
+from game import Directions
 """
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
@@ -68,15 +69,14 @@ def tinyMazeSearch(problem):
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
     sequence of moves will be incorrect, so only use this for tinyMaze.
     """
-    from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
+    
     frontier = Stack()
-    currAge = 0
-    age = {}
+    parents = {}
     frontier.push(problem.getStartState())
     expanded = []
     node = None
@@ -84,30 +84,42 @@ def depthFirstSearch(problem):
         node = frontier.pop()
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            print(age)
             path = []
             pnode = node
-            age[node] = currAge + 1
             while pnode != problem.getStartState():
-                neighbors = problem.getSuccessors(pnode)
-                minNode = node
-                for n in neighbors:
-                    print(type(n[0]))
-                    print(type(minNode))
-                    if age[n[0]] < age[minNode] and n[0] not in path:
-                        minNode = n[0]
-                path.append(minNode)
-                pnode = minNode
-            return path
+                path.append(pnode)
+                pnode = parents[pnode]
+            path.append(problem.getStartState())
+            path.reverse()
+            actions = []
+            for c in range(0,len(path)-1):
+                dx = path[c+1][0] - path[c][0]
+                dy = path[c+1][1] - path[c][1]
+                if dx == 1:
+                    actions.append(Directions.EAST)
+                    continue
+                elif dx == -1:
+                    actions.append(Directions.WEST)
+                    continue
+                elif dy == 1:
+                    actions.append(Directions.NORTH)
+                    continue
+                elif dy == -1:
+                    actions.append(Directions.SOUTH)
+                    continue
+                else:
+                    return null
+            print(f"FINAL PATH:{path}")
+            print(f"FINAL ACTIONS:{actions}")
+            return actions
 
         if node not in expanded:
             print(f"Explored {node}")
-            age[node] = currAge
-            currAge += 1
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     print(f"Pushed {child[0]}")
+                    parents[child[0]] = node
                     frontier.push(child[0])
     return None
     
