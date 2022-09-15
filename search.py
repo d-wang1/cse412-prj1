@@ -75,28 +75,40 @@ def tinyMazeSearch(problem):
 
 def depthFirstSearch(problem):
     frontier = Stack()
-    parents = {}
+    currAge = 0
+    age = {}
     frontier.push(problem.getStartState())
     expanded = []
     node = None
     while not frontier.isEmpty():
-        lastNode = node
         node = frontier.pop()
-        # parents.put(node, lastNode)
         print(f"Popped {node}")
         if problem.isGoalState(node):
+            print(age)
             path = []
-            # curr = node
-            # while curr != problem.getStartState():
+            pnode = node
+            age[node] = currAge + 1
+            while pnode != problem.getStartState():
+                neighbors = problem.getSuccessors(pnode)
+                minNode = node
+                for n in neighbors:
+                    print(type(n[0]))
+                    print(type(minNode))
+                    if age[n[0]] < age[minNode] and n[0] not in path:
+                        minNode = n[0]
+                path.append(minNode)
+                pnode = minNode
             return path
+
         if node not in expanded:
             print(f"Explored {node}")
+            age[node] = currAge
+            currAge += 1
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     print(f"Pushed {child[0]}")
                     frontier.push(child[0])
-                # path.push(child[1])
     return None
     
     """
@@ -111,7 +123,6 @@ def depthFirstSearch(problem):
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    
     # util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
