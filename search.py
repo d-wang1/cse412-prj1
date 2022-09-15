@@ -157,7 +157,7 @@ def breadthFirstSearch(problem):
                 if child not in expanded:
                     print(f"Pushed {child}")
                     frontier.push(child)
-    return 1
+    return None
     
     
     
@@ -167,10 +167,9 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    frontier = ()
-    parents = {}
+    frontier = PriorityQueue()
     frontier.push(problem.getStartState())
-    expanded = []
+    expanded = Counter()
     node = None
     while not frontier.isEmpty():
         lastNode = node
