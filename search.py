@@ -189,28 +189,44 @@ def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     frontier = PriorityQueue()
-    frontier.push(problem.getStartState())
-    expanded = Counter()
+    parents = {}
+    costs = {}
+    parents[problem.getStartState()] = (None, None)
+    frontier.push(problem.getStartState(),0)
+    costs[problem.getStartState()] = 0
+    expanded = []
     node = None
     while not frontier.isEmpty():
-        lastNode = node
         node = frontier.pop()
-        # parents.put(node, lastNode)
-        print(f"Popped {node}")
+        # print(f"Popped {node}")
         if problem.isGoalState(node):
             nodePath = []
-            # curr = node
-            # while curr != problem.getStartState():
-            return nodePath
+            actions = []
+            pnode = node
+            act = None
+            while pnode != None:
+                nodePath.append(pnode)
+                actions.append(act)
+                pnode, act = parents[pnode]
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
+            # print(f"NodePath:{nodePath}")
+            # print(f"Actions:{actions}")
+            return actions
+
         if node not in expanded:
-            print(f"Explored {node}")
+            # print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    print(f"Pushed {child[0]}")
-                    frontier.push(child[0])
-                # nodePath.push(child[1])
-    return -1
+                    # print(f"Pushed {child[0]}")
+                    costs[child[0]] = costs[node] + child[2]
+                    print(f"COST:{child[2]}")
+                    parents[child[0]] = (node, child[1])
+                    frontier.push(child[0], costs[child[0]])
+    return None
 
 def nullHeuristic(state, problem=None):
     """
