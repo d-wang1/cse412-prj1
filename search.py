@@ -73,10 +73,24 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def convDir(dir):
+    if dir == "North":
+        return Directions.NORTH
+    if dir == "South":
+        return Directions.SOUTH
+    if dir == "East":
+        return Directions.EAST
+    if dir == "West":
+        return Directions.WEST
+    print(f"{dir} is not accepted!")
+    return None
+
+
 def depthFirstSearch(problem):
     
     frontier = Stack()
     parents = {}
+    parents[problem.getStartState()] = (None, None)
     frontier.push(problem.getStartState())
     expanded = []
     node = None
@@ -85,39 +99,19 @@ def depthFirstSearch(problem):
         # print(f"Popped {node}")
         if problem.isGoalState(node):
             nodePath = []
+            actions = []
             pnode = node
-            print(f"Node:{node}")
-            print(f"NodePath:{nodePath}")
-            while pnode != problem.getStartState():
+            act = None
+            while pnode != None:
                 nodePath.append(pnode)
-                pnode = parents[pnode]
-                print(f"NodePath:{nodePath}")
+                actions.append(act)
+                pnode, act = parents[pnode]
             nodePath.append(problem.getStartState())
             nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
             print(f"NodePath:{nodePath}")
-            actions = []
-            for c in range(0,len(nodePath)-1):
-                print(type(nodePath[c+1][0]))
-                print(nodePath)
-                print(actions)
-                diffX = nodePath[c+1][0] - nodePath[c][0]
-                diffY = nodePath[c+1][1] - nodePath[c][1]
-                if diffX == 1:
-                    actions.append(Directions.EAST)
-                    continue
-                elif diffX == -1:
-                    actions.append(Directions.WEST)
-                    continue
-                elif diffY == 1:
-                    actions.append(Directions.NORTH)
-                    continue
-                elif diffY == -1:
-                    actions.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            # print(f"FINAL PATH:{nodePath}")
-            # print(f"FINAL ACTIONS:{actions}")
+            print(f"Actions:{actions}")
             return actions
 
         if node not in expanded:
@@ -126,7 +120,7 @@ def depthFirstSearch(problem):
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     # print(f"Pushed {child[0]}")
-                    parents[child[0]] = node
+                    parents[child[0]] = (node, child[1])
                     frontier.push(child[0])
     return None
     
@@ -142,7 +136,7 @@ def depthFirstSearch(problem):
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    # util.raiseNotDefined()
+    util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
   
