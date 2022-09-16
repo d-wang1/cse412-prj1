@@ -115,7 +115,7 @@ def depthFirstSearch(problem):
                     actions.append(Directions.SOUTH)
                     continue
                 else:
-                    return null
+                    return None
             # print(f"FINAL PATH:{nodePath}")
             # print(f"FINAL ACTIONS:{actions}")
             return actions
@@ -227,8 +227,48 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    frontier = Stack()
+    parents = {}
+    frontier.push(problem.getStartState())
+    expanded = []
+    node = None
+    while not frontier.isEmpty():
+        node = frontier.pop()
+        if problem.isGoalState(node):
+            path = []
+            pnode = node
+            while pnode != problem.getStartState():
+                path.append(pnode)
+                pnode = parents[pnode]
+            path.append(problem.getStartState())
+            path.reverse()
+            actions = []
+            for c in range(0,len(path)-1):
+                dx = path[c+1][0] - path[c][0]
+                dy = path[c+1][1] - path[c][1]
+                if dx == 1:
+                    actions.append(Directions.EAST)
+                    continue
+                elif dx == -1:
+                    actions.append(Directions.WEST)
+                    continue
+                elif dy == 1:
+                    actions.append(Directions.NORTH)
+                    continue
+                elif dy == -1:
+                    actions.append(Directions.SOUTH)
+                    continue
+                else:
+                    return None
+            return actions
+
+        if node not in expanded:
+            expanded.append(node)
+            for child in problem.getSuccessors(node):
+                if child[0] not in expanded:
+                    parents[child[0]] = node
+                    frontier.push(child[0])
+    return None
 
 
 # Abbreviations
