@@ -82,43 +82,50 @@ def depthFirstSearch(problem):
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()
-        print(f"Popped {node}")
+        # print(f"Popped {node}")
         if problem.isGoalState(node):
-            path = []
+            nodePath = []
             pnode = node
+            print(f"Node:{node}")
+            print(f"NodePath:{nodePath}")
             while pnode != problem.getStartState():
-                path.append(pnode)
+                nodePath.append(pnode)
                 pnode = parents[pnode]
-            path.append(problem.getStartState())
-            path.reverse()
+                print(f"NodePath:{nodePath}")
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            print(f"NodePath:{nodePath}")
             actions = []
-            for c in range(0,len(path)-1):
-                dx = path[c+1][0] - path[c][0]
-                dy = path[c+1][1] - path[c][1]
-                if dx == 1:
+            for c in range(0,len(nodePath)-1):
+                print(type(nodePath[c+1][0]))
+                print(nodePath)
+                print(actions)
+                diffX = nodePath[c+1][0] - nodePath[c][0]
+                diffY = nodePath[c+1][1] - nodePath[c][1]
+                if diffX == 1:
                     actions.append(Directions.EAST)
                     continue
-                elif dx == -1:
+                elif diffX == -1:
                     actions.append(Directions.WEST)
                     continue
-                elif dy == 1:
+                elif diffY == 1:
                     actions.append(Directions.NORTH)
                     continue
-                elif dy == -1:
+                elif diffY == -1:
                     actions.append(Directions.SOUTH)
                     continue
                 else:
                     return null
-            print(f"FINAL PATH:{path}")
-            print(f"FINAL ACTIONS:{actions}")
+            # print(f"FINAL PATH:{nodePath}")
+            # print(f"FINAL ACTIONS:{actions}")
             return actions
 
         if node not in expanded:
-            print(f"Explored {node}")
+            # print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    print(f"Pushed {child[0]}")
+                    # print(f"Pushed {child[0]}")
                     parents[child[0]] = node
                     frontier.push(child[0])
     return None
@@ -148,31 +155,31 @@ def breadthFirstSearch(problem):
     while not frontier.isEmpty():
         node = frontier.pop()       
         if problem.isGoalState(node):
-            path=[]
+            nodePath=[]
             curr = node
             while curr != problem.getStartState():
-                path.append(curr)
+                nodePath.append(curr)
                 curr=parents[curr]
-            path.append(problem.getStartState())
-            path.reverse()
-            for c in range(0,len(path)-1):
-                dx = path[c+1][0] - path[c][0]
-                dy = path[c+1][1] - path[c][1]
-                if dx == 1:
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            for c in range(0,len(nodePath)-1):
+                diffX = nodePath[c+1][0] - nodePath[c][0]
+                diffY = nodePath[c+1][1] - nodePath[c][1]
+                if diffX == 1:
                     action.append(Directions.EAST)
                     continue
-                elif dx == -1:
+                elif diffX == -1:
                     action.append(Directions.WEST)
                     continue
-                elif dy == 1:
+                elif diffY == 1:
                     action.append(Directions.NORTH)
                     continue
-                elif dy == -1:
+                elif diffY == -1:
                     action.append(Directions.SOUTH)
                     continue
                 else:
-                    return null
-            print(f"FINAL PATH:{path}")
+                    return None
+            print(f"FINAL PATH:{nodePath}")
             print(f"FINAL ACTIONS:{action}")
             return action
         if node not in expanded:
@@ -182,10 +189,6 @@ def breadthFirstSearch(problem):
                     parents[child[0]] = node
                     frontier.push(child[0])
     return None
-    
-    
-    
-    
     
     
 def uniformCostSearch(problem):
@@ -201,10 +204,10 @@ def uniformCostSearch(problem):
         # parents.put(node, lastNode)
         print(f"Popped {node}")
         if problem.isGoalState(node):
-            path = []
+            nodePath = []
             # curr = node
             # while curr != problem.getStartState():
-            return path
+            return nodePath
         if node not in expanded:
             print(f"Explored {node}")
             expanded.append(node)
@@ -212,7 +215,7 @@ def uniformCostSearch(problem):
                 if child[0] not in expanded:
                     print(f"Pushed {child[0]}")
                     frontier.push(child[0])
-                # path.push(child[1])
+                # nodePath.push(child[1])
     return -1
 
 def nullHeuristic(state, problem=None):
