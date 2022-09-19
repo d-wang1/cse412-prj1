@@ -142,47 +142,33 @@ def breadthFirstSearch(problem):
   
     frontier = Queue()
     expanded = []
-    frontier.push(problem.getStartState())
     parents = {}
-    action = []
+    frontier.push(problem.getStartState())
+    parents[problem.getStartState()] = (None, None)
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()  
         print(node)     
         if problem.isGoalState(node):
-            path=[]
-            curr = node
-            while curr != problem.getStartState():
-                path.append(curr)
-                curr=parents[curr]
-            path.append(problem.getStartState())
-            path.reverse()
-            for c in range(0,len(path)-1):
-                print(f"{path[c+1][0]} and {path[c][0]}")
-                diffX = int(path[c+1][0]) - int(path[c][0])
-                diffY = int(path[c+1][1]) - int(path[c][1])
-                if diffX == 1:
-                    action.append(Directions.EAST)
-                    continue
-                elif diffX == -1:
-                    action.append(Directions.WEST)
-                    continue
-                elif diffY == 1:
-                    action.append(Directions.NORTH)
-                    continue
-                elif diffY == -1:
-                    action.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            print(f"FINAL PATH:{nodePath}")
-            print(f"FINAL ACTIONS:{action}")
-            return action
+            nodePath = []
+            actions = []
+            pnode = node
+            act = None
+            while pnode != None:
+                nodePath.append(pnode)
+                actions.append(act)
+                pnode, act = parents[pnode]
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
+            print(f"Actions:{actions}")
+            return actions
         if node not in expanded:
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    parents[child[0]] = node
+                    parents[child[0]] = (node, child[1])
                     frontier.push(child[0])
     return None
     
