@@ -141,19 +141,20 @@ def breadthFirstSearch(problem):
     action = []
     node = None
     while not frontier.isEmpty():
-        node = frontier.pop()       
+        node = frontier.pop()  
+        print(node)     
         if problem.isGoalState(node):
-            pacPath=[]
+            path=[]
             curr = node
             while curr != problem.getStartState():
-                pacPath.append(curr)
+                path.append(curr)
                 curr=parents[curr]
-            pacPath.append(problem.getStartState())
-            pacPath.reverse()
-            for c in range(0,len(pacPath)-1):
-                print(f"{pacPath[c+1][0]} and {pacPath[c][0]}")
-                diffX = int(pacPath[c+1][0]) - int(pacPath[c][0])
-                diffY = int(pacPath[c+1][1]) - int(pacPath[c][1])
+            path.append(problem.getStartState())
+            path.reverse()
+            for c in range(0,len(path)-1):
+                print(f"{path[c+1][0]} and {path[c][0]}")
+                diffX = int(path[c+1][0]) - int(path[c][0])
+                diffY = int(path[c+1][1]) - int(path[c][1])
                 if diffX == 1:
                     action.append(Directions.EAST)
                     continue
@@ -218,7 +219,7 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    frontier = Stack()
+    frontier = PriorityQueue()
     parents = {}
     frontier.push(problem.getStartState())
     expanded = []
@@ -226,32 +227,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     while not frontier.isEmpty():
         node = frontier.pop()
         if problem.isGoalState(node):
-            path = []
-            pnode = node
-            while pnode != problem.getStartState():
-                path.append(pnode)
-                pnode = parents[pnode]
-            path.append(problem.getStartState())
-            path.reverse()
-            actions = []
-            for c in range(0,len(path)-1):
-                dx = path[c+1][0] - path[c][0]
-                dy = path[c+1][1] - path[c][1]
-                if dx == 1:
-                    actions.append(Directions.EAST)
-                    continue
-                elif dx == -1:
-                    actions.append(Directions.WEST)
-                    continue
-                elif dy == 1:
-                    actions.append(Directions.NORTH)
-                    continue
-                elif dy == -1:
-                    actions.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            return actions
+            path = {}
+            return None
 
         if node not in expanded:
             expanded.append(node)
