@@ -150,7 +150,6 @@ def breadthFirstSearch(problem):
         node = frontier.pop()  
         print(node)     
         if problem.isGoalState(node):
-<<<<<<< HEAD
             path=[]
             curr = node
             while curr != problem.getStartState():
@@ -162,18 +161,6 @@ def breadthFirstSearch(problem):
                 print(f"{path[c+1][0]} and {path[c][0]}")
                 diffX = int(path[c+1][0]) - int(path[c][0])
                 diffY = int(path[c+1][1]) - int(path[c][1])
-=======
-            nodePath=[]
-            curr = node
-            while curr != problem.getStartState():
-                nodePath.append(curr)
-                curr=parents[curr]
-            nodePath.append(problem.getStartState())
-            nodePath.reverse()
-            for c in range(0,len(nodePath)-1):
-                diffX = nodePath[c+1][0] - nodePath[c][0]
-                diffY = nodePath[c+1][1] - nodePath[c][1]
->>>>>>> 93a2feb8e877f4934f0b5fe816ee4109525a8217
                 if diffX == 1:
                     action.append(Directions.EAST)
                     continue
