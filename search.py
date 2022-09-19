@@ -73,10 +73,24 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def convDir(dir):
+    if dir == "North":
+        return Directions.NORTH
+    if dir == "South":
+        return Directions.SOUTH
+    if dir == "East":
+        return Directions.EAST
+    if dir == "West":
+        return Directions.WEST
+    print(f"{dir} is not accepted!")
+    return None
+
+
 def depthFirstSearch(problem):
     
     frontier = Stack()
     parents = {}
+    parents[problem.getStartState()] = (None, None)
     frontier.push(problem.getStartState())
     expanded = []
     node = None
@@ -85,39 +99,19 @@ def depthFirstSearch(problem):
         # print(f"Popped {node}")
         if problem.isGoalState(node):
             nodePath = []
+            actions = []
             pnode = node
-            print(f"Node:{node}")
-            print(f"NodePath:{nodePath}")
-            while pnode != problem.getStartState():
+            act = None
+            while pnode != None:
                 nodePath.append(pnode)
-                pnode = parents[pnode]
-                print(f"NodePath:{nodePath}")
+                actions.append(act)
+                pnode, act = parents[pnode]
             nodePath.append(problem.getStartState())
             nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
             print(f"NodePath:{nodePath}")
-            actions = []
-            for c in range(0,len(nodePath)-1):
-                print(type(nodePath[c+1][0]))
-                print(nodePath)
-                print(actions)
-                diffX = nodePath[c+1][0] - nodePath[c][0]
-                diffY = nodePath[c+1][1] - nodePath[c][1]
-                if diffX == 1:
-                    actions.append(Directions.EAST)
-                    continue
-                elif diffX == -1:
-                    actions.append(Directions.WEST)
-                    continue
-                elif diffY == 1:
-                    actions.append(Directions.NORTH)
-                    continue
-                elif diffY == -1:
-                    actions.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            # print(f"FINAL PATH:{nodePath}")
-            # print(f"FINAL ACTIONS:{actions}")
+            print(f"Actions:{actions}")
             return actions
 
         if node not in expanded:
@@ -126,7 +120,7 @@ def depthFirstSearch(problem):
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     # print(f"Pushed {child[0]}")
-                    parents[child[0]] = node
+                    parents[child[0]] = (node, child[1])
                     frontier.push(child[0])
     return None
     
@@ -142,51 +136,38 @@ def depthFirstSearch(problem):
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    # util.raiseNotDefined()
+    util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
-  
+    print(problem.getStartState())
     frontier = Queue()
     expanded = []
-    frontier.push(problem.getStartState())
     parents = {}
-    action = []
+    frontier.push(problem.getStartState())
+    parents[problem.getStartState()] = (None, None)
     node = None
     while not frontier.isEmpty():
-        node = frontier.pop()       
+        node = frontier.pop()  
         if problem.isGoalState(node):
-            nodePath=[]
-            curr = node
-            while curr != problem.getStartState():
-                nodePath.append(curr)
-                curr=parents[curr]
+            nodePath = []
+            actions = []
+            pnode = node
+            act = None #individual direction
+            while pnode != None:
+                nodePath.append(pnode)
+                actions.append(act)
+                pnode, act = parents[pnode]
             nodePath.append(problem.getStartState())
             nodePath.reverse()
-            for c in range(0,len(nodePath)-1):
-                diffX = nodePath[c+1][0] - nodePath[c][0]
-                diffY = nodePath[c+1][1] - nodePath[c][1]
-                if diffX == 1:
-                    action.append(Directions.EAST)
-                    continue
-                elif diffX == -1:
-                    action.append(Directions.WEST)
-                    continue
-                elif diffY == 1:
-                    action.append(Directions.NORTH)
-                    continue
-                elif diffY == -1:
-                    action.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            print(f"FINAL PATH:{nodePath}")
-            print(f"FINAL ACTIONS:{action}")
-            return action
+            actions.pop(0)
+            actions.reverse()
+            return actions
         if node not in expanded:
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    parents[child[0]] = node
+                    parents[child[0]] = (node, child[1])
+                    print(child)
                     frontier.push(child[0])
     return None
     
@@ -195,28 +176,52 @@ def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     frontier = PriorityQueue()
-    frontier.push(problem.getStartState())
-    expanded = Counter()
+    parents = {}
+    costs = {}
+    parents[problem.getStartState()] = (None, None)
+    frontier.push(problem.getStartState(),0)
+    costs[problem.getStartState()] = 0
+    expanded = []
     node = None
     while not frontier.isEmpty():
-        lastNode = node
         node = frontier.pop()
-        # parents.put(node, lastNode)
-        print(f"Popped {node}")
+        # print(f"Popped {node}")
         if problem.isGoalState(node):
             nodePath = []
-            # curr = node
-            # while curr != problem.getStartState():
-            return nodePath
+            actions = []
+            pnode = node
+            act = None
+            while pnode != None:
+                nodePath.append(pnode)
+                actions.append(act)
+                pnode, act = parents[pnode]
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
+            # print(f"NodePath:{nodePath}")
+            # print(f"Actions:{actions}")
+            print(actions)
+            return actions
+
         if node not in expanded:
-            print(f"Explored {node}")
+            # print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    print(f"Pushed {child[0]}")
-                    frontier.push(child[0])
-                # nodePath.push(child[1])
-    return -1
+                    # print(f"Pushed {child}")
+                    if child[0] in costs:
+                        if costs[child[0]] < costs[node] + child[2]:
+                            continue
+                        else:
+                            costs[child[0]] = costs[node] + child[2]
+                    else:
+                        costs[child[0]] = costs[node] + child[2]
+                    print(f"{child} COST:{costs[child[0]]}")
+                    parents[child[0]] = (node, child[1])
+                    frontier.push(child[0], costs[child[0]])
+    return None
+    # return []
 
 def nullHeuristic(state, problem=None):
     """
@@ -227,7 +232,7 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    frontier = Stack()
+    frontier = PriorityQueue()
     parents = {}
     frontier.push(problem.getStartState())
     expanded = []
@@ -235,32 +240,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     while not frontier.isEmpty():
         node = frontier.pop()
         if problem.isGoalState(node):
-            path = []
-            pnode = node
-            while pnode != problem.getStartState():
-                path.append(pnode)
-                pnode = parents[pnode]
-            path.append(problem.getStartState())
-            path.reverse()
-            actions = []
-            for c in range(0,len(path)-1):
-                dx = path[c+1][0] - path[c][0]
-                dy = path[c+1][1] - path[c][1]
-                if dx == 1:
-                    actions.append(Directions.EAST)
-                    continue
-                elif dx == -1:
-                    actions.append(Directions.WEST)
-                    continue
-                elif dy == 1:
-                    actions.append(Directions.NORTH)
-                    continue
-                elif dy == -1:
-                    actions.append(Directions.SOUTH)
-                    continue
-                else:
-                    return None
-            return actions
+            path = {}
+            return None
 
         if node not in expanded:
             expanded.append(node)
