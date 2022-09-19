@@ -201,6 +201,7 @@ def uniformCostSearch(problem):
             actions.reverse()
             # print(f"NodePath:{nodePath}")
             # print(f"Actions:{actions}")
+            print(actions)
             return actions
 
         if node not in expanded:
@@ -208,12 +209,19 @@ def uniformCostSearch(problem):
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    # print(f"Pushed {child[0]}")
-                    costs[child[0]] = costs[node] + child[2]
-                    print(f"COST:{child[2]}")
+                    # print(f"Pushed {child}")
+                    if child[0] in costs:
+                        if costs[child[0]] < costs[node] + child[2]:
+                            continue
+                        else:
+                            costs[child[0]] = costs[node] + child[2]
+                    else:
+                        costs[child[0]] = costs[node] + child[2]
+                    print(f"{child} COST:{costs[child[0]]}")
                     parents[child[0]] = (node, child[1])
                     frontier.push(child[0], costs[child[0]])
     return None
+    # return []
 
 def nullHeuristic(state, problem=None):
     """
