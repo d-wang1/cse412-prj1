@@ -233,22 +233,48 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     frontier = PriorityQueue()
-    parents = {}
-    frontier.push(problem.getStartState())
     expanded = []
+    parents = {}
+    fn = {} #node, estimated actual cost
+    gn = {} #node, actual cost to cur node
+    gn[problem.getStartState()]=0
+    frontier.push(problem.getStartState(), 0)
+    parents[problem.getStartState()] = (None, None)
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()
         if problem.isGoalState(node):
-            path = {}
-            return None
+            nodePath = []
+            actions = []
+            pnode = node
+            act = None
+            while pnode != None:
+                nodePath.append(pnode)
+                actions.append(act)
+                pnode, act = parents[pnode]
+            nodePath.append(problem.getStartState())
+            nodePath.reverse()
+            actions.pop(0)
+            actions.reverse()
+            return actions
 
         if node not in expanded:
             expanded.append(node)
             for child in problem.getSuccessors(node):
+                # print(f"{node}'s child is:{child}")
                 if child[0] not in expanded:
-                    parents[child[0]] = node
-                    frontier.push(child[0])
+                    hn = heuristic(child[0], problem)
+                    if child[0] not in gn:
+                        gn[child[0]] = gn[node] + child[2]
+                    else:
+                        if gn[child[0]] > gn[node] + child[2]:
+                            gn[child[0]] = gn[node] + child[2]
+                        else:
+                            continue
+                    fn[child[0]] = hn + gn[child[0]]
+                    parents[child[0]] = (node, child[1])
+                    frontier.update(child[0], fn[child[0]])
+
     return None
 
 
