@@ -269,11 +269,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     else:
                         if gn[child[0]] > gn[node] + child[2]:
                             gn[child[0]] = gn[node] + child[2]
-                            print("was here")
+                        else:
+                            continue
                     fn[child[0]] = hn + gn[child[0]]
                     parents[child[0]] = (node, child[1])
                     frontier.update(child[0], fn[child[0]])
-                    print(f"{child[0]}'s fn:{fn[child[0]]}")
 
     return None
 
