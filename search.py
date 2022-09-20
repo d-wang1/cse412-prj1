@@ -221,7 +221,7 @@ def uniformCostSearch(problem):
                     parents[child[0]] = (node, child[1])
                     frontier.push(child[0], costs[child[0]])
     return None
-    # return []
+    
 
 def nullHeuristic(state, problem=None):
     """
