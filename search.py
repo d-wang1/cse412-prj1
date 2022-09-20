@@ -235,8 +235,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     frontier = PriorityQueue()
     expanded = []
     parents = {}
+    fn = {} #node, estimated actual cost
+    gn = {} #node, actual cost to cur node
+    gn[problem.getStartState()]=0
     frontier.push(problem.getStartState(), 0)
-    print(frontier.pop())
+    parents[problem.getStartState()] = (None, None)
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()
@@ -258,11 +261,20 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if node not in expanded:
             expanded.append(node)
             for child in problem.getSuccessors(node):
+                # print(f"{node}'s child is:{child}")
                 if child[0] not in expanded:
                     hn = heuristic(child[0], problem)
-                    fn = 
-                    parents[child[0]] = node
-                    frontier.push(child[0])
+                    if child[0] not in gn:
+                        gn[child[0]] = gn[node] + child[2]
+                    else:
+                        if gn[child[0]] > gn[node] + child[2]:
+                            gn[child[0]] = gn[node] + child[2]
+                            print("was here")
+                    fn[child[0]] = hn + gn[child[0]]
+                    parents[child[0]] = (node, child[1])
+                    frontier.update(child[0], fn[child[0]])
+                    print(f"{child[0]}'s fn:{fn[child[0]]}")
+
     return None
 
 
