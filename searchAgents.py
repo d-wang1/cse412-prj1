@@ -288,6 +288,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.pos = ()
+        self.cornersSeen = []
 
     def getStartState(self):
         """
@@ -295,14 +297,27 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, ())
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return len(state[1]) >= 4
+
+    def getCostOfActions(self, actions):
+            """
+            Returns the cost of a particular sequence of actions.  If those actions
+            include an illegal move, return 999999.  This is implemented for you.
+            """
+            if actions == None: return 999999
+            x,y= self.startingPosition
+            for action in actions:
+                dx, dy = Actions.directionToVector(action)
+                x, y = int(x + dx), int(y + dy)
+                if self.walls[x][y]: return 999999
+            return len(actions)
 
     def getSuccessors(self, state):
         """
@@ -314,33 +329,32 @@ class CornersProblem(search.SearchProblem):
             state, 'action' is the action required to get there, and 'stepCost'
             is the incremental cost of expanding to that successor
         """
-
+        top, right = self.walls.height-2, self.walls.width-2
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
-
-            "*** YOUR CODE HERE ***"
+            x,y = state[0]
+            exploredCorners = list(state[1])
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            if not hitsWall and nextx >= 1 and nextx <= right and nexty >= 1 and nexty <= top:
+                if (nextx,nexty) == (1,1) and (1,1) not in state[1]:
+                    exploredCorners.append((1,1))
+                if (nextx,nexty) == (1,top) and (1,top) not in state[1]:
+                    exploredCorners.append((1,top))
+                if (nextx,nexty) == (right, 1) and (right,1) not in state[1]:
+                    exploredCorners.append((right,1))
+                if (nextx,nexty) == (right,top) and (right, top) not in state[1]:
+                    exploredCorners.append((right, top))
+                # Defaults to cost of 1.
+                successors.append((((nextx,nexty),tuple(exploredCorners)),action,1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
-    def getCostOfActions(self, actions):
-        """
-        Returns the cost of a particular sequence of actions.  If those actions
-        include an illegal move, return 999999.  This is implemented for you.
-        """
-        if actions == None: return 999999
-        x,y= self.startingPosition
-        for action in actions:
-            dx, dy = Actions.directionToVector(action)
-            x, y = int(x + dx), int(y + dy)
-            if self.walls[x][y]: return 999999
-        return len(actions)
+    
 
 
 def cornersHeuristic(state, problem):
