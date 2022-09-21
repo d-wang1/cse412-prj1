@@ -141,18 +141,19 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     print(problem.getStartState())
     frontier = Queue()
-    expanded = []
     parents = {}
-    frontier.push(problem.getStartState())
     parents[problem.getStartState()] = (None, None)
+    frontier.push(problem.getStartState())
+    expanded = []
     node = None
     while not frontier.isEmpty():
-        node = frontier.pop()  
+        node = frontier.pop()
+        # print(f"Popped {node}")
         if problem.isGoalState(node):
             nodePath = []
             actions = []
             pnode = node
-            act = None #individual direction
+            act = None
             while pnode != None:
                 nodePath.append(pnode)
                 actions.append(act)
@@ -161,13 +162,17 @@ def breadthFirstSearch(problem):
             nodePath.reverse()
             actions.pop(0)
             actions.reverse()
+            # print(f"NodePath:{nodePath}")
+            # print(f"Actions:{actions}")
             return actions
+
         if node not in expanded:
+            # print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
+                    # print(f"Pushed {child[0]}")
                     parents[child[0]] = (node, child[1])
-                    print(child)
                     frontier.push(child[0])
     return None
     
