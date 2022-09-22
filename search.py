@@ -145,9 +145,10 @@ def breadthFirstSearch(problem):
     expanded = []
     node = None
     while not frontier.isEmpty():
-        node = frontier.pop()  
-        print(f"{node},{list(frontier)}")
+        node = frontier.pop()
+        print(f"{node}")
         if problem.isGoalState(node):
+            print(parents)
             nodePath = []
             actions = []
             pnode = node
@@ -170,7 +171,8 @@ def breadthFirstSearch(problem):
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     # print(f"Pushed {child[0]}")
-                    parents[child[0]] = (node, child[1])
+                    if child[0] not in parents:
+                        parents[child[0]] = (node, child[1])
                     frontier.push(child[0])
     return None
     
