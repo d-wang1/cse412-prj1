@@ -115,11 +115,9 @@ def depthFirstSearch(problem):
             return actions
 
         if node not in expanded:
-            # print(f"Explored {node}")
             expanded.append(node)
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
-                    # print(f"Pushed {child[0]}")
                     parents[child[0]] = (node, child[1])
                     frontier.push(child[0])
     return None
@@ -138,8 +136,8 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     util.raiseNotDefined()
 
+
 def breadthFirstSearch(problem):
-    print(problem.getStartState())
     frontier = Queue()
     expanded = []
     parents = {}
@@ -148,6 +146,7 @@ def breadthFirstSearch(problem):
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()  
+        print(f"{node},{list(frontier)}")
         if problem.isGoalState(node):
             nodePath = []
             actions = []
@@ -167,10 +166,10 @@ def breadthFirstSearch(problem):
             for child in problem.getSuccessors(node):
                 if child[0] not in expanded:
                     parents[child[0]] = (node, child[1])
-                    print(child)
                     frontier.push(child[0])
     return None
     
+
     
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
