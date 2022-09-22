@@ -287,6 +287,7 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
+        self.path = []
         "*** YOUR CODE HERE ***"
         self.pos = ()
         self.cornersSeen = []
@@ -374,6 +375,10 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+    print(state[0])
+    
+    
+    
     return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
