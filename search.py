@@ -146,9 +146,7 @@ def breadthFirstSearch(problem):
     node = None
     while not frontier.isEmpty():
         node = frontier.pop()
-        print(f"{node}")
         if problem.isGoalState(node):
-            print(parents)
             nodePath = []
             actions = []
             pnode = node
