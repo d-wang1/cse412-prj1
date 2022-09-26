@@ -272,7 +272,7 @@ class CornersProblem(search.SearchProblem):
 
     You must select a suitable state space and successor function
     """
-
+ # STATE: 
     def __init__(self, startingGameState):
         """
         Stores the walls, pacman's starting position and corners.
@@ -319,7 +319,7 @@ class CornersProblem(search.SearchProblem):
                 x, y = int(x + dx), int(y + dy)
                 if self.walls[x][y]: return 999999
             return len(actions)
-
+    # STATE: ( (x,y), ( (1,1),(1,10) ) )
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
