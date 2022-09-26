@@ -279,6 +279,7 @@ class CornersProblem(search.SearchProblem):
         """
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
+        self.startingGameState = startingGameState
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
         for corner in self.corners:
@@ -378,17 +379,26 @@ def cornersHeuristic(state, problem):
     # corners = ((1,1), (1,top), (right, 1), (right, top))
     # STATE: ( (x,y), ( (1,1),(1,10) ) )
 
-    dis = 0
+    # dis = 0
+    # for corner in problem.corners:
+    #     if corner not in state[1]:
+    #         print(f"{corner};;;; {state[0]}")
+    #         # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
+    #         distanceM=abs(corner[0]-state[0][0]) + abs(corner[1] - state[0][1])
+    #         if(distanceM>dis):
+    #             dis=distanceM
+    # return dis
+    manhattanDist = []
+    count = 0
+    # print((1,1),(5,5),problem.startingGameState)
     for corner in problem.corners:
-        if(corner not in state[1]):
-            # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
-            distanceM=mazeDisance(corner, state[0])
-            if(distanceM>dis):
-                dis=distanceM
-            
-    
-    
-    return dis # Default to trivial solution
+        if corner not in state[1]:
+            # manhattanDist.append(abs(state[0][0] - corner[0]) + abs(state[0][1] - corner[1]))
+            manhattanDist.append(mazeDistance(state[0],corner,problem.startingGameState))
+            count += 1
+    if count == 0:
+        return 0
+    return max(manhattanDist)
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
