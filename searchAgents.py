@@ -375,7 +375,13 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    print(state[0])
+    # corners = ((1,1), (1,top), (right, 1), (right, top))
+    dis = []
+    for corner in problem.corners:
+        if(corner not in state[1]):
+            
+            
+        
     
     
     
