@@ -376,9 +376,9 @@ def cornersHeuristic(state, problem):
 
     "*** YOUR CODE HERE ***"
     # corners = ((1,1), (1,top), (right, 1), (right, top))
-    dis = []
-    for corner in problem.corners:
-        if(corner not in state[1]):
+    # dis = []
+    # for corner in problem.corners:
+    #     if(corner not in state[1]):
             
             
         
