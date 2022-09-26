@@ -379,26 +379,15 @@ def cornersHeuristic(state, problem):
     # corners = ((1,1), (1,top), (right, 1), (right, top))
     # STATE: ( (x,y), ( (1,1),(1,10) ) )
 
-    # dis = 0
-    # for corner in problem.corners:
-    #     if corner not in state[1]:
-    #         print(f"{corner};;;; {state[0]}")
-    #         # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
-    #         distanceM=abs(corner[0]-state[0][0]) + abs(corner[1] - state[0][1])
-    #         if(distanceM>dis):
-    #             dis=distanceM
-    # return dis
-    manhattanDist = []
-    count = 0
-    # print((1,1),(5,5),problem.startingGameState)
+    dis = 0
     for corner in problem.corners:
         if corner not in state[1]:
-            # manhattanDist.append(abs(state[0][0] - corner[0]) + abs(state[0][1] - corner[1]))
-            manhattanDist.append(mazeDistance(state[0],corner,problem.startingGameState))
-            count += 1
-    if count == 0:
-        return 0
-    return max(manhattanDist)
+            # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
+            distanceM=mazeDistance(state[0],corner,problem.startingGameState)
+            if(distanceM>dis):
+                dis=distanceM
+    return dis
+   
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
