@@ -356,7 +356,7 @@ class CornersProblem(search.SearchProblem):
         return successors
 
     
-
+import math
 
 def cornersHeuristic(state, problem):
     """
@@ -376,16 +376,19 @@ def cornersHeuristic(state, problem):
 
     "*** YOUR CODE HERE ***"
     # corners = ((1,1), (1,top), (right, 1), (right, top))
-    # dis = []
-    # for corner in problem.corners:
-    #     if(corner not in state[1]):
+    # STATE: ( (x,y), ( (1,1),(1,10) ) )
+
+    dis = 0
+    for corner in problem.corners:
+        if(corner not in state[1]):
+            # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
+            distanceM=mazeDisance(corner, state[0])
+            if(distanceM>dis):
+                dis=distanceM
             
-            
-        
     
     
-    
-    return 0 # Default to trivial solution
+    return dis # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
