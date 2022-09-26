@@ -382,10 +382,13 @@ def cornersHeuristic(state, problem):
     dis = 0
     for corner in corners:
         if(corner not in state[1]):
-            distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
-            # distanceM=mazeDistance(corner, state[0], problem)
+            # print(state[0])
+            # distanceM = abs(corner[0]-state[0][0])+abs(corner[1]-state[0][1])
+            # print(distanceM)
+            distanceM=mazeDistance(corner, state[0], problem)
             if(distanceM>dis):
                 dis=distanceM
+                print(dis)
             
   
     return dis # Default to trivial solution
